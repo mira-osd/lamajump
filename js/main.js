@@ -38,13 +38,15 @@ class Component {
     }
 
     draw() {
-        // myGameArea.context.drawImage(
-        //     this.image,
-        //     this.x,
-        //     this.y,
-        //     this.width,
-        //     this.height
-        // );
+      /*
+     myGameArea.context.drawImage(
+       this.image,
+       this.x,
+       this.y,
+       this.width,
+       this.height
+     );
+     */
         myGameArea.context.fillRect(this.x, this.y, this.width, this.height);
             // this.y += -dy; ----> permet de faire défiler le jeu vers le bas 
         
@@ -137,7 +139,7 @@ function updateGameArea() {
         console.log('frame x100');
         
         // var width = random(W /3, (2/3)*W);
-        var width = Math.floor(Math.random() * (300 - 100 + 1)) + 100;
+        var width = Math.floor(Math.random() * (250 - 150 + 1)) + 150;
         var height = 25; 
         var y = 0;
 
@@ -147,7 +149,7 @@ function updateGameArea() {
         
     
         myGameArea.myObstacles.push(new Component(width, height, "./images/obstacle.png", 600-width, y));
-        myGameArea.myObstacles.push(new Component(width - gap, height, "./images/obstacle.png", 0, y+ gap));
+        myGameArea.myObstacles.push(new Component(width, height, "./images/obstacle.png", 0, y+ gap));
 
     }
 
