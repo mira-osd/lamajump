@@ -2,6 +2,8 @@ var W = 600;
 var H = 1000;
 var dy = -2;
 var gravity = 2;
+var maxspeed = 30;
+var ground = H; 
 
 function startGame() {
     myGameArea.start();
@@ -38,11 +40,10 @@ class Component {
 
         this.vx = 0; // vitesse horizontale
         this.vy = 0; // vitesse verticale
-        this.ground = 870 // veut dire que le sol = 1000 - 130 (height du player)
     }
 
     jump() {
-      this.vy = -25;
+      this.vy = -30;
     }
     forward() {
       this.vx = 5;
@@ -51,6 +52,10 @@ class Component {
       this.vx = -5;
     }
     update() {
+
+      // on limite la vitesse 
+      if (this.vy > maxspeed) this.vy = maxspeed;
+
       // on met a jour la position via les vitesses
       this.x += this.vx;
       this.y += this.vy;
@@ -58,8 +63,31 @@ class Component {
       // on empeche d'aller plus bas que le sol
       if (this.y > H - this.height) this.y = H - this.height;
 
+    //
+    // on redéfinit le sol avec l'une des plateformes
+    //
+
+    let closestPlatforms = myGameArea.myPlatforms;
+    // On ne garde que les plateformes qui par projection chevauchent du player en x
+    closestPlatforms = closestPlatforms.filter(platform => player.x + player.width > platform.x && player.x < platform.x + platform.width); // player chevauche la plate-forme en horizontal
+    // On ne garde que les plateformes au dessous (ie: tant que pas entierement traversé)
+    closestPlatforms = closestPlatforms.filter(platform => player.y <= platform.y + platform.height);
+    // On trie par de la plateforme la plus proche a la plus éloignée (du player)
+    closestPlatforms.sort((a, b) => Math.abs(player.y+player.height - a.y) - Math.abs(player.y+player.height - b.y));
+
+    if (closestPlatforms[0] && this.vy > 0 && player.y+player.height <= closestPlatforms[0].y + this.vy) {
+      player.y = closestPlatforms[0].y - player.height;
+    }
+     // on empeche d'aller plus bas que le sol
+     if (player.y + player.height > ground) {
+      console.log('limit')
+      player.y = ground - player.height;
+      this.vy = 0;
+    }
+
+      /* SAUT SUR PLATEFORME RÉALISÉ PAR ANTOINE HIER
       // on empeche d'aller plus bas que l'obstacle sur lequel il est
-      
+    
       // tableau des plateformes qui sont en dessous du player
 
       let bottomPlateforms = myGameArea.myPlatforms.filter(function(platform){
@@ -86,12 +114,8 @@ class Component {
         console.log('oui')
         player.y = bottomAndOverlapPlateforms[0].y - player.height;
       }
+      */
 
-        // if((this.x+this.width >myGameArea.myPlatforms.x) && (this.x+this.width <myGameArea.myPlatforms.x+myGameArea.myPlatforms.W)&& (this.y+this.height<myGameArea.myPlatforms.y)){
-        //   this.ground = myGameArea.myPlatforms.y-this.height;
-        //   } else if ((this.x+this.width < myGameArea.myPlatforms.x)||(this.x+this.width>myGameArea.myPlatforms.x + myGameArea.myPlatforms.W)) {
-        //   this.ground = H-25-this.height;
-        //   }
 
       if (this.x > W) this.x = 0;
       if (this.x < -this.width) this.x = W;
@@ -112,7 +136,7 @@ class Component {
      );
      */
      myGameArea.context.fillRect(this.x, this.y, this.width, this.height);
-       // this.y += -dy; ----> permet de faire défiler le jeu vers le bas    
+      //this.y += -dy; //----> permet de faire défiler le jeu vers le bas    
   }
 };  
 
@@ -183,11 +207,11 @@ function updateGameArea() {
     
 
     //
-    // Obstacle toutes les 100frames
+    // Obstacle toutes les 300frames
     //
 
-    if (myGameArea.frames % 300 === 0) {
-      console.log("frame x100");
+    if (myGameArea.frames % 120 === 0) {
+      console.log("frame x300");
     
       var minWidth = 150;
       var maxWidth = 250;
@@ -215,7 +239,7 @@ function updateGameArea() {
     //
 
     myGameArea.myPlatforms.forEach(function(platform, index){
-      platform.y += 1;
+      platform.y += 3;
       platform.draw();
 
       // si la plateforme sort (du bas), on l'enlève du tableau des plateformes
@@ -227,9 +251,8 @@ function updateGameArea() {
     // loop
     myGameArea.reqAnimation = window.requestAnimationFrame(updateGameArea);
     //myGameArea.myObstacles = [];
-    
-    
-    player.update(); // on recalcule les positions de notre mario
+  
+    player.update(); // on recalcule les positions de notre player
     player.draw();
 }
 
