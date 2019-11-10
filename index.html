@@ -7,15 +7,26 @@
 		<link href="https://fonts.googleapis.com/css?family=Montserrat:300,700&display=swap" rel="stylesheet">
 	</head>
 	<body>
-	<section class ="all">
-		<div class="game-intro">
+		<section id="game-intro" class="active">
 			<img src="images/logo.png" alt="" class="logo-img">
 			<br>
 			<button id="start-button">Start Game</button>
 			<p>Use the space, left and right arrow to jump on the platforms without falling!</p>
-		  </div>
-		<div id="game-board"></div>
-	</section>
+			<img src="images/arrows.png" alt="" class="arrows">
+		</section>
+		<section id="game-board"></section>
+
+		<section id="gameOverMenu">
+			<img src="images/gameover.png" alt="" class="gameover">
+			<h3 id="go_score"></h3>
+			<a class="restart" href="javascript:reset()">
+				<img src="images/restart.png" class="img-restart">
+			</a>
+		</section>
+
+		<section id="scoreBoard">
+			<p id="score">0</p>
+		</section>
 		<script src="js/main.js"></script>
 	</body>
 </html>

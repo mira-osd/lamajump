@@ -1,51 +1,84 @@
 * {box-sizing:border-box;}
 
+/* lien pour le background cloud : <a href="https://www.freepik.com/free-photos-vectors/banner">Banner vector created by pch.vector - www.freepik.com</a>
+color orange claire : #ffbd6f
+color orange foncée : #ff8d4c
+*/
+
 body {
   margin:0;
   font-family: 'Montserrat', sans-serif;
 }
 
-.all {
-  display:flex; 
-  justify-content: space-evenly;
-  align-items: center;
+h1{
+  margin: 0;
 }
 
-.game-intro {
-  display: block;
-  
-}
-.logo-img {
-  width: 120px;
+#game-intro, #gameOverMenu {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 30px;
-  
+  width:540px;
+  height:100vh;
+}
+
+.logo-img {
+  width: 350px;
+  margin: 100px 20px 65px 80px;
 }
 body button {
-  font-size: 15px;
-  font-family: 'Montserrat', sans-serif;
-  background-color: #7DE6E9;
-  color: black;
+  font-size: 17px;
+  font-family: 'Montserrat', sans-serif '700';
+  background-color: #5ce1e6;
+  color: white;
   padding: 10px 20px;
   border: 0;
   border-radius: 5px;
-  margin-bottom: 25px;
-  margin-left: 15px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 200px 0 200px;
+
+
 }
 p {
   font-size: 15px; 
+  text-align: center;
+  margin: 30px 50px 0 50px;
+  color: grey;
 }
+
+.arrows {
+   width: 150px;
+   margin: 40px 150px 0 190px;
+}
+
+.gameover {
+    width: 320px;
+    margin: 200px 50px 5px 50px;
+}
+
+#go_score {
+    color: #ff8d4c;
+    font-size: 24px;
+    margin: 40px 120px 40px;
+}
+
+.img-restart{
+    width: 70px;
+    margin: 50px 160px 0 200px;
+}
+
 
 canvas {
   display:block;
   margin-left: auto;
   margin-right: auto;
-  border: 1px solid black;
   height:100vh;
-
+  background: url(images/background-sky.jpg); 
+  background-size: cover;
 }
+
+section {
+  display: none;
+ }
+ section.active {
+  display: block;
+ }
