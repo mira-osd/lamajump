@@ -1,6 +1,6 @@
 * {box-sizing:border-box;}
 
-/* lien pour le background cloud : <a href="https://www.freepik.com/free-photos-vectors/banner">Banner vector created by pch.vector - www.freepik.com</a>
+/* 
 color orange claire : #ffbd6f
 color orange foncée : #ff8d4c
 */
@@ -23,17 +23,17 @@ h1{
 }
 
 .logo-img {
-  width: 350px;
+  width: 360px;
   margin: 100px 20px 65px 80px;
 }
 body button {
   font-size: 17px;
-  font-family: 'Montserrat', sans-serif '700';
+  font-family: 'Montserrat', sans-serif;
   background-color: #5ce1e6;
   color: white;
   padding: 10px 20px;
   border: 0;
-  border-radius: 5px;
+  border-radius: 10px;
   margin: 0 200px 0 200px;
 
 

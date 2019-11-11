@@ -1,7 +1,7 @@
 var W = 600;
 var H = 1000;
 var dy = -2;
-var gravity = 1.7;
+var gravity = 2;
 var maxspeed = 30; 
 var ground = H;
 var points = 0;
@@ -49,12 +49,23 @@ class Component {
       this.vy = -30;
       this.hasJumped = true;
       this.hasTouchedFirstObstacle = true;
+
     }
     forward() {
-      this.vx = 8;
+      this.image.src = "./images/white-lama.png";
+      const imgright = document.createElement("img1");
+      imgright.onload = () => {
+        this.imgright = imgright;
+      };
+      this.vx = 5;
     }
     backward() {
-      this.vx = -8;
+      this.image.src = "./images/lama-left.png";
+      const imgleft = document.createElement("img2");
+      imgleft.onload = () => {
+        this.imgleft = imgleft;
+      };
+      this.vx = -5;
     }
     update() {
 
@@ -93,7 +104,7 @@ class Component {
     // GAMEOVER
     if (player.y + player.height === ground && player.hasJumped) {
       myGameArea.gameOver = true;
-      // afficher ton GOMenu
+      // afficher GOMenu
       showGoMenu();
     } 
 
@@ -104,6 +115,7 @@ class Component {
       this.vy += gravity;
 
     }
+
     draw() {
   
      myGameArea.context.drawImage(
@@ -112,8 +124,7 @@ class Component {
        this.y,
        this.width,
        this.height
-     );
-      // this.y += -dy; //----> permet de faire défiler le jeu vers le bas    
+     );  
   }
 };  
 
@@ -131,9 +142,12 @@ document.onkeydown = function (e) {
       pressed.up = true;
       
       player.jump(); // jump mario 🦘
+
+
       break;
     // LEFT
     case 37:
+    
       if (pressed.arrowleft) return; // STOP si touche déja enfoncée
       pressed.arrowleft = true;
       
@@ -155,6 +169,8 @@ document.onkeyup = function (e) {
     case 32:
       // on "libère" l'etat d'enfoncement de la touche
       pressed.space = false; 
+
+      player.vy = 0; 
       break;
     // ARROWLEFT
     case 37:
@@ -216,34 +232,47 @@ function updateGameArea() {
     
 
     //
-    // Obstacle toutes les 120frames
+    // Obstacle toutes les 100frames
     //
 
     if (myGameArea.frames % 100 === 0) {
-      console.log("frame x120");
+      console.log("frame x100");
     
-      var minWidth = 140;
-      var maxWidth = 160;
+      var minWidth = 120;
+      var maxWidth = 180;
       var width = Math.floor(Math.random() * (maxWidth - minWidth + 1)) + minWidth;
-  
       var width2 = Math.floor(Math.random() * (maxWidth - minWidth + 1)) + minWidth;
-      var width3 = Math.floor(Math.random() * (maxWidth - minWidth + 1)) + minWidth;
-      var randomX = 50+width2+Math.floor(Math.random() * (W - width - 50 - width2 - 150));
+      
       var height = 25;
       var y = 0;
-      var minGapH = 300;
-      var maxGapH = 500;
+
+      //gap de la première plateforme
+      var minGapH = 200;
+      var maxGapH = 340;
       var gapH = Math.floor(Math.random() * (maxGapH - minGapH + 1) + minGapH);
+
+      // gap de la deuxième plateforme
+      var minGapH2 = 340; 
+      var maxGapH2 = 600; 
+      var gapH2 = Math.floor(Math.random() * (maxGapH2 - minGapH2 + 1) + minGapH2);
+
+      //emplacement random de la première plateforme 
+      var minX = 10;
+      var maxX = 150;
+      var randomX = Math.floor(Math.random() * (maxX - minX + 1) + minX);
+
+      // emplacement random de la deuxième plateforme
+      var minX2 = 230;
+      var maxX2 = 450;
+      var randomX2 = Math.floor(Math.random() * (maxX2 - minX2 + 1) + minX2);
   
       myGameArea.myPlatforms.push(
-        new Component(width, height, "./images/13.png", W - width, y)
+        new Component(width, height, "./images/13.png", randomX, y - gapH)
       );
       myGameArea.myPlatforms.push(
-        new Component(width2, height, "./images/13.png", 50, y - gapH)
+        new Component(width2, height, "./images/13.png", randomX2, y - gapH2)
       );
-      myGameArea.myPlatforms.push(
-        new Component(width3, height, "./images/13.png", randomX, y - gapH/2)
-      );
+
     }
 
     if(myGameArea.frames % 15 === 0){
