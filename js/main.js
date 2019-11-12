@@ -1,6 +1,5 @@
 var W = 600;
 var H = 1000;
-var dy = -2;
 var gravity = 2;
 var maxspeed = 30; 
 var ground = H;
@@ -202,11 +201,6 @@ function score() {
   myGameArea.context.fillText(`${points} pts`, W-10, 35);
 }
 
-function updateScore() {
-  var scoreText = document.getElementById("score");
-  scoreText.innerHTML = score;
-}
-
 function showGoMenu(){
   document.getElementById("game-intro").style.display = "none";
   document.getElementById("game-board").style.display = "none";
@@ -214,13 +208,6 @@ function showGoMenu(){
 
   var scoreText = document.getElementById("go_score");
   scoreText.innerHTML = "Your final score : " + points;
-}
-
-//afficher score
-function hideScore() {
-	var menu = document.getElementById("scoreBoard");
-  menu.style.zIndex = -1;
-  menu.style.visibility = "hidden";
 }
 
 // Boucle d'anim, exécutée toutes les 16ms
@@ -248,7 +235,7 @@ function updateGameArea() {
 
       //gap de la première plateforme
       var minGapH = 200;
-      var maxGapH = 340;
+      var maxGapH = 330;
       var gapH = Math.floor(Math.random() * (maxGapH - minGapH + 1) + minGapH);
 
       // gap de la deuxième plateforme
