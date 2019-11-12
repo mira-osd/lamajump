@@ -1,7 +1,7 @@
 var W = 600;
 var H = 1000;
 var gravity = 2;
-var maxspeed = 30; 
+var maxspeed = 33; 
 var ground = H;
 var points = 0;
 
@@ -45,7 +45,7 @@ class Component {
         this.vy = 0; // vitesse verticale
     }
     jump() {
-      this.vy = -30;
+      this.vy = -33;
       this.hasJumped = true;
       this.hasTouchedFirstObstacle = true;
 
@@ -235,12 +235,12 @@ function updateGameArea() {
 
       //gap de la première plateforme
       var minGapH = 200;
-      var maxGapH = 280;
+      var maxGapH = 260;
       var gapH = Math.floor(Math.random() * (maxGapH - minGapH + 1) + minGapH);
 
       // gap de la deuxième plateforme
       var minGapH2 = 340; 
-      var maxGapH2 = 600; 
+      var maxGapH2 = 400; 
       var gapH2 = Math.floor(Math.random() * (maxGapH2 - minGapH2 + 1) + minGapH2);
 
       //emplacement random de la première plateforme 
