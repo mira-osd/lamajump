@@ -235,7 +235,7 @@ function updateGameArea() {
 
       //gap de la première plateforme
       var minGapH = 200;
-      var maxGapH = 330;
+      var maxGapH = 280;
       var gapH = Math.floor(Math.random() * (maxGapH - minGapH + 1) + minGapH);
 
       // gap de la deuxième plateforme
