@@ -31,52 +31,67 @@ var myGameArea = {
 };
 
 class Component {
-    constructor(width, height, image, x, y) {
-        this.image = new Image();
-        this.image.src = image;
-        this.width = width;
-        this.height = height;
-        this.x = x;
-        this.y = y;
+  constructor(width, height, image, x, y) {
+    this.image = new Image();
+    this.image.src = image;
+    this.width = width;
+    this.height = height;
+    this.x = x;
+    this.y = y;
         
-        this.hasJumped = false;
-        this.hasTouchedFirstObstacle = false;
-        this.vx = 0; // vitesse horizontale
-        this.vy = 0; // vitesse verticale
-    }
-    jump() {
-      this.vy = -33;
-      this.hasJumped = true;
-      this.hasTouchedFirstObstacle = true;
+    this.hasJumped = false;
+    this.hasTouchedFirstObstacle = false;
+    this.vx = 0; // vitesse horizontale
+    this.vy = 0; // vitesse verticale
+  };
 
-    }
-    forward() {
-      this.image.src = "./images/white-lama.png";
-      const imgright = document.createElement("img1");
-      imgright.onload = () => {
-        this.imgright = imgright;
-      };
-      this.vx = 5;
-    }
-    backward() {
-      this.image.src = "./images/lama-left.png";
-      const imgleft = document.createElement("img2");
-      imgleft.onload = () => {
-        this.imgleft = imgleft;
-      };
-      this.vx = -5;
-    }
-    update() {
+  jump() {
+    this.vy = -33;
+    this.hasJumped = true;
+    this.hasTouchedFirstObstacle = true;
 
-      // on limite la vitesse 
-      if (this.vy > maxspeed) this.vy = maxspeed;
+    // on crée le son du jump
+    const audio = document.createElement("audio");
+     audio.onload = () => {
+       this.audio = audio;
+     };
+     audio.src = "./audio/jump-sound.mp3";
+     audio.play();
+  };
 
-      // on met a jour la position via les vitesses
-      this.x += this.vx;
-      this.y += this.vy;
+  forward() {
+    this.image.src = "./images/white-lama.png";
+
+    // on change l'image quand le player tourne à droite 
+    const imgright = document.createElement("img1");
+    imgright.onload = () => {
+      this.imgright = imgright;
+    }
+    this.vx = 5;
+    };
+
+  backward() {
+    this.image.src = "./images/lama-left.png";
+
+    // on change l'image quand le player tourne à droite 
+    const imgleft = document.createElement("img2");
+    imgleft.onload = () => {
+      this.imgleft = imgleft;
+    };
+    this.vx = -5;
+    };
+
+  update() {
+
+    // on limite la vitesse 
+    if (this.vy > maxspeed) this.vy = maxspeed;
+
+    // on met a jour la position via les vitesses
+    this.x += this.vx;
+    this.y += this.vy;
   
-      // on empeche d'aller plus bas que le sol
-      if (this.y > H - this.height) this.y = H - this.height;
+    // on empeche d'aller plus bas que le sol
+    if (this.y > H - this.height) this.y = H - this.height;
 
     //
     // on créer le saut du player sur les plateformes
@@ -94,7 +109,7 @@ class Component {
       player.y = closestPlatforms[0].y - player.height;
     }
      // on empeche d'aller plus bas que le sol
-     if (player.y + player.height > ground) {
+    if (player.y + player.height > ground) {
       console.log('limit')
       player.y = ground - player.height;
       this.vy = 0;
@@ -107,23 +122,23 @@ class Component {
       showGoMenu();
     } 
 
-      if (this.x > W) this.x = 0;
-      if (this.x < -this.width) this.x = W;
+    if (this.x > W) this.x = 0;
+    if (this.x < -this.width) this.x = W;
       
-      // la gravité s'applique
-      this.vy += gravity;
+    // la gravité s'applique
+    this.vy += gravity;
 
-    }
-
-    draw() {
+    };
   
-     myGameArea.context.drawImage(
-       this.image,
-       this.x,
-       this.y,
-       this.width,
-       this.height
-     );  
+  // on crée la structure des images 
+  draw() {
+    myGameArea.context.drawImage(
+      this.image,
+      this.x,
+      this.y,
+      this.width,
+      this.height
+    );  
   }
 };  
 
@@ -141,7 +156,6 @@ document.onkeydown = function (e) {
       pressed.up = true;
       
       player.jump(); // jump mario 🦘
-
 
       break;
     // LEFT
@@ -190,10 +204,12 @@ document.onkeyup = function (e) {
   }
 };
 
+// on crée la fonction replay du jeu lors du gameover
 function reset(){
   document.location.reload(true);
 }
 
+// on ajoute le design du score à point 
 function score() {
   myGameArea.context.font = "35px Montserrat";
   myGameArea.context.textAlign = "right";
@@ -201,6 +217,7 @@ function score() {
   myGameArea.context.fillText(`${points} pts`, W-10, 35);
 }
 
+// on affiche la page du gameover
 function showGoMenu(){
   document.getElementById("game-intro").style.display = "none";
   document.getElementById("game-board").style.display = "none";
@@ -210,61 +227,63 @@ function showGoMenu(){
   scoreText.innerHTML = "Your final score : " + points;
 }
 
+//
+// creation des 2 plateforms supplementaires
+//
+function createPlatforms() {
+  var minWidth = 120;
+  var maxWidth = 180;
+  var width = Math.floor(Math.random() * (maxWidth - minWidth + 1)) + minWidth;
+  var width2 = Math.floor(Math.random() * (maxWidth - minWidth + 1)) + minWidth;
+    
+  var height = 25;
+  var y = 0;
+
+  //gap de la première plateforme
+  var minGapH = 200;
+  var maxGapH = 260;
+  var gapH = Math.floor(Math.random() * (maxGapH - minGapH + 1) + minGapH);
+
+  // gap de la deuxième plateforme
+  var minGapH2 = 340; 
+  var maxGapH2 = 400; 
+  var gapH2 = Math.floor(Math.random() * (maxGapH2 - minGapH2 + 1) + minGapH2);
+
+  //emplacement random de la première plateforme 
+  var minX = 10;
+  var maxX = 150;
+  var randomX = Math.floor(Math.random() * (maxX - minX + 1) + minX);
+
+  // emplacement random de la deuxième plateforme
+  var minX2 = 230;
+  var maxX2 = 450;
+  var randomX2 = Math.floor(Math.random() * (maxX2 - minX2 + 1) + minX2);
+
+  myGameArea.myPlatforms.push(
+    new Component(width, height, "./images/13.png", randomX, y - gapH)
+  );
+  myGameArea.myPlatforms.push(
+    new Component(width2, height, "./images/13.png", randomX2, y - gapH2)
+  );
+}
+
 // Boucle d'anim, exécutée toutes les 16ms
 function updateGameArea() {
-    //console.log('tick')
-    myGameArea.frames += 1;
-
-    myGameArea.clear();
+  //console.log('tick')
+  myGameArea.frames += 1;
+  myGameArea.clear();
     
+  //
+  // Obstacle toutes les 100frames
+  //
 
-    //
-    // Obstacle toutes les 100frames
-    //
+  if (myGameArea.frames % 100 === 0) {
+    createPlatforms();
+  }
 
-    if (myGameArea.frames % 100 === 0) {
-      console.log("frame x100");
-    
-      var minWidth = 120;
-      var maxWidth = 180;
-      var width = Math.floor(Math.random() * (maxWidth - minWidth + 1)) + minWidth;
-      var width2 = Math.floor(Math.random() * (maxWidth - minWidth + 1)) + minWidth;
-      
-      var height = 25;
-      var y = 0;
-
-      //gap de la première plateforme
-      var minGapH = 200;
-      var maxGapH = 260;
-      var gapH = Math.floor(Math.random() * (maxGapH - minGapH + 1) + minGapH);
-
-      // gap de la deuxième plateforme
-      var minGapH2 = 340; 
-      var maxGapH2 = 400; 
-      var gapH2 = Math.floor(Math.random() * (maxGapH2 - minGapH2 + 1) + minGapH2);
-
-      //emplacement random de la première plateforme 
-      var minX = 10;
-      var maxX = 150;
-      var randomX = Math.floor(Math.random() * (maxX - minX + 1) + minX);
-
-      // emplacement random de la deuxième plateforme
-      var minX2 = 230;
-      var maxX2 = 450;
-      var randomX2 = Math.floor(Math.random() * (maxX2 - minX2 + 1) + minX2);
-  
-      myGameArea.myPlatforms.push(
-        new Component(width, height, "./images/13.png", randomX, y - gapH)
-      );
-      myGameArea.myPlatforms.push(
-        new Component(width2, height, "./images/13.png", randomX2, y - gapH2)
-      );
-
-    }
-
-    if(myGameArea.frames % 15 === 0){
-      if(player.hasTouchedFirstObstacle) {
-        points ++;
+  if(myGameArea.frames % 15 === 0){
+    if(player.hasTouchedFirstObstacle) {
+      points ++;
       }
     }
 
@@ -292,12 +311,13 @@ function updateGameArea() {
       myGameArea.reqAnimation = window.requestAnimationFrame(updateGameArea);
     }
 }
-  document.getElementById("start-button").onclick = function() {
+
+document.getElementById("start-button").onclick = function() {
   document.getElementById("game-intro").style.display = "none";
   document.getElementById("game-board").style.display = "block";
   document.getElementById("gameOverMenu").style.display = "none";
   startGame();
- };
+};
 
 
 
